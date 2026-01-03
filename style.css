@@ -244,11 +244,9 @@ header p {
 }
 
 @media (max-width: 640px) {
-  .photo-visual {
-    height: 96px;
-    padding: 6px;
+  body {
+    padding: 18px 12px 36px;
   }
-}
 
   #app-container {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -259,9 +257,13 @@ header p {
     border-radius: 12px;
   }
 
-  .emoji-visual,
-  .photo-visual {
+  .emoji-visual {
     height: 120px;
+  }
+
+  .photo-visual {
+    height: 96px;     /* 職業画像は小さめ */
+    padding: 6px;
   }
 
   .emoji-char {
@@ -286,3 +288,4 @@ header p {
     font-size: 13px;
   }
 }
+
