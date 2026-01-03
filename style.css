@@ -139,7 +139,7 @@ header p {
 
 .photo-visual {
   width: 100%;
-  height: 130px;          /* ← 小さくする（120〜140で好み調整） */
+  height: 140px;          /* ← 小さくする（120〜140で好み調整） */
   object-fit: contain;    /* ← 全体を必ず表示 */
   background: #ffffff;    /* ← 余白が出ても綺麗に */
   display: block;
