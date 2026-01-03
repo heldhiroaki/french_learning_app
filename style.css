@@ -1,253 +1,288 @@
+/* style.css */
 :root {
-    --bg: #f9f7f3;
-    --card: #ffffff;
-    --primary: #2f4f4f;
-    --accent: #f59e0b;
-    --text-subtle: #4b5563;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --radius: 16px;
-    --gap: 18px;
+  --bg: #f9f7f3;
+  --card: #ffffff;
+  --primary: #2f4f4f;
+  --accent: #f59e0b;
+  --text-subtle: #4b5563;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --radius: 16px;
+  --gap: 18px;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at 20% 20%, #fdf6e3 0, transparent 25%),
-                radial-gradient(circle at 80% 0%, #e0f2fe 0, transparent 25%),
-                var(--bg);
-    color: var(--primary);
-    min-height: 100vh;
-    padding: 28px 16px 48px;
+  font-family: 'Inter', 'Noto Sans JP', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at 20% 20%, #fdf6e3 0, transparent 25%),
+    radial-gradient(circle at 80% 0%, #e0f2fe 0, transparent 25%),
+    var(--bg);
+  color: var(--primary);
+  min-height: 100vh;
+  padding: 28px 16px 48px;
 }
 
 header {
-    text-align: center;
-    margin-bottom: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+header .header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 header h1 {
-    font-size: clamp(28px, 3vw, 38px);
-    letter-spacing: 0.04em;
+  font-size: clamp(28px, 3vw, 38px);
+  letter-spacing: 0.04em;
+}
+
+header .category-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-subtle);
+}
+
+.category-control select {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  font-size: 14px;
+  color: #111827;
+  box-shadow: var(--shadow);
 }
 
 header p {
-    margin-top: 8px;
-    color: var(--text-subtle);
-    font-size: 15px;
-}
-
-#app-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: var(--gap);
-    width: 100%;
-}
-
-.card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    position: relative;
-    transition: transform 120ms ease, box-shadow 160ms ease;
-    cursor: pointer;
-    isolation: isolate;
-}
-
-.card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 160ms ease;
-    pointer-events: none;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
-}
-
-.card:hover::after {
-    opacity: 1;
-}
-
-.emoji-visual {
-    width: 100%;
-    height: 170px;
-    display: grid;
-    place-content: center;
-    background: linear-gradient(135deg, var(--start), var(--end));
-    position: relative;
-    overflow: hidden;
-}
-
-.emoji-visual::before,
-.emoji-visual::after {
-    content: '';
-    position: absolute;
-    border-radius: 999px;
-    filter: blur(14px);
-    opacity: 0.35;
-    background: #fff;
-}
-
-.emoji-visual::before {
-    width: 160px;
-    height: 160px;
-    top: -30px;
-    right: -20px;
-}
-
-.emoji-visual::after {
-    width: 140px;
-    height: 140px;
-    bottom: -24px;
-    left: -18px;
-}
-
-.emoji-char {
-    font-size: 68px;
-    text-align: center;
-    z-index: 1;
-}
-
-.emoji-labels {
-    display: grid;
-    gap: 4px;
-    place-items: center;
-    margin-top: 8px;
-    z-index: 1;
-}
-
-.emoji-hint {
-    background: rgba(255, 255, 255, 0.78);
-    color: #0f172a;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-}
-
-.emoji-word {
-    color: #111827;
-    background: rgba(255, 255, 255, 0.72);
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.card-content {
-    padding: 14px 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.word {
-    font-size: 20px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.word .pill {
-    background: #e0f2fe;
-    color: #0f172a;
-    font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 999px;
-    letter-spacing: 0.04em;
-}
-
-.pronunciation {
-    color: var(--text-subtle);
-    font-size: 14px;
-}
-
-.hint {
-    font-size: 12px;
-    color: var(--text-subtle);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
+  margin-top: 8px;
+  color: var(--text-subtle);
+  font-size: 15px;
 }
 
 .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #ecfeff;
-    color: #0f172a;
-    padding: 8px 10px;
-    border-radius: 12px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    font-size: 13px;
-    margin: 0 auto 16px;
-    max-width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ecfeff;
+  color: #0f172a;
+  padding: 8px 10px;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  margin: 0 auto 16px;
+  max-width: fit-content;
 }
 
 .badge svg {
-    width: 16px;
-    height: 16px;
+  width: 16px;
+  height: 16px;
 }
 
-footer {
-    text-align: center;
-    margin-top: 28px;
-    color: var(--text-subtle);
-    font-size: 13px;
+#app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--gap);
+  width: 100%;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+  transition: transform 120ms ease, box-shadow 160ms ease;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 160ms ease;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.emoji-visual {
+  width: 100%;
+  height: 170px;
+  display: grid;
+  place-content: center;
+  background: linear-gradient(135deg, var(--start), var(--end));
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-visual {
+  width: 100%;
+  height: 130px;          /* ← 小さくする（120〜140で好み調整） */
+  object-fit: contain;    /* ← 全体を必ず表示 */
+  background: #ffffff;    /* ← 余白が出ても綺麗に */
+  display: block;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px;           /* ← 絵が枠に密着しないように */
+}
+
+
+.emoji-visual::before,
+.emoji-visual::after {
+  content: '';
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(14px);
+  opacity: 0.35;
+  background: #fff;
+}
+
+.emoji-visual::before {
+  width: 160px;
+  height: 160px;
+  top: -30px;
+  right: -20px;
+}
+
+.emoji-visual::after {
+  width: 140px;
+  height: 140px;
+  bottom: -24px;
+  left: -18px;
+}
+
+.emoji-char {
+  font-size: 68px;
+  text-align: center;
+  z-index: 1;
+}
+
+.emoji-labels {
+  display: grid;
+  gap: 4px;
+  place-items: center;
+  margin-top: 8px;
+  z-index: 1;
+}
+
+.emoji-hint {
+  background: rgba(255, 255, 255, 0.78);
+  color: #0f172a;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.emoji-word {
+  color: #111827;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.card-content {
+  padding: 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.word {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.word .pill {
+  background: #e0f2fe;
+  color: #0f172a;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.pronunciation {
+  color: var(--text-subtle);
+  font-size: 14px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-subtle);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 @media (max-width: 640px) {
-    body {
-        padding: 18px 12px 36px;
-    }
+  .photo-visual {
+    height: 96px;
+    padding: 6px;
+  }
+}
 
-    #app-container {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-    }
+  #app-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
 
-    .card {
-        border-radius: 12px;
-    }
+  .card {
+    border-radius: 12px;
+  }
 
-    .emoji-visual {
-        height: 120px;
-    }
+  .emoji-visual,
+  .photo-visual {
+    height: 120px;
+  }
 
-    .emoji-char {
-        font-size: 46px;
-    }
+  .emoji-char {
+    font-size: 46px;
+  }
 
-    .emoji-hint {
-        font-size: 11px;
-        padding: 2px 6px;
-    }
+  .emoji-hint {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
 
-    .emoji-word {
-        font-size: 12px;
-        padding: 3px 8px;
-    }
+  .emoji-word {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
 
-    .word {
-        font-size: 17px;
-    }
+  .word {
+    font-size: 17px;
+  }
 
-    .pronunciation {
-        font-size: 13px;
-    }
+  .pronunciation {
+    font-size: 13px;
+  }
 }
