@@ -1,25 +1,38 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apprendre le Français</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apprendre le Français</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>Animaux (動物)</h1>
-        <p>カードをタップして発音を聞こう！</p>
-    </header>
+  <header>
+    <div class="header-top">
+      <h1 id="category-title">Animaux (動物)</h1>
 
-    <main id="app-container">
-        </main>
-    <main id="app-container"></main>
+      <label class="category-control">
+        <span class="category-label">ジャンル</span>
+        <!-- optionはJSで生成するので空にする -->
+        <select id="category-select" aria-label="カテゴリー選択"></select>
+      </label>
+    </div>
 
-    <noscript>
-        <p style="text-align:center; margin-top:16px; color:#374151;">音声を聞くにはJavaScriptを有効にしてください。</p>
-    </noscript>
+    <p>カードをタップして発音を聞こう！</p>
+  </header>
 
-    <script src="script.js"></script>
+  <div class="badge" id="badge" hidden></div>
+
+  <!-- mainは1つだけ -->
+  <main id="app-container"></main>
+
+  <noscript>
+    <p style="text-align:center; margin-top:16px; color:#374151;">
+      音声を聞くにはJavaScriptを有効にしてください。
+    </p>
+  </noscript>
+
+  <script src="script.js"></script>
 </body>
 </html>
