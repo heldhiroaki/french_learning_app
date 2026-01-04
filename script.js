@@ -96,79 +96,67 @@
     frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
   }
 
-let playToken = 0;
+  // ---- speech (stable sequential) ----
+  let playToken = 0;
 
-function cancelSpeech() {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-}
-
-function waitMs(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-function speakOnce(text, token) {
-  return new Promise((resolve) => {
-    if (!window.speechSynthesis) return resolve();
-    if (token !== playToken) return resolve(); // 途中キャンセル
-
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'fr-FR';
-    if (frenchVoice) u.voice = frenchVoice;
-    u.rate = 0.98;
-
-    const done = () => resolve();
-
-    u.onend = done;
-    u.onerror = done;
-
-    // Safari対策：onendが飛ばない場合があるので保険タイマー
-    const fallback = setTimeout(done, 4000);
-    u.onend = () => { clearTimeout(fallback); done(); };
-    u.onerror = () => { clearTimeout(fallback); done(); };
-
-    window.speechSynthesis.speak(u);
-  });
-}
-
-async function speakGendered(item) {
-  // この呼び出し専用のトークンを発行
-  playToken += 1;
-  const token = playToken;
-
-  // ここでだけキャンセル（毎回cancelしない）
-  cancelSpeech();
-
-  const male = item.masculine.article === "l'"
-    ? `${item.masculine.article}${item.masculine.word}`
-    : `${item.masculine.article} ${item.masculine.word}`;
-
-  const female = item.feminine.article === "l'"
-    ? `${item.feminine.article}${item.feminine.word}`
-    : `${item.feminine.article} ${item.feminine.word}`;
-
-  // 同形は1回だけにするならこのまま
-  if (item.feminine.same || male === female) {
-    await speakOnce(male, token);
-    return;
+  function cancelSpeech() {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
   }
 
-  await speakOnce(male, token);
-  if (token !== playToken) return;
+  function waitMs(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
 
-  await waitMs(250);
-  if (token !== playToken) return;
+  function speakOnce(text, token) {
+    return new Promise((resolve) => {
+      if (!window.speechSynthesis) return resolve();
+      if (token !== playToken) return resolve();
 
-  await speakOnce(female, token);
-}
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'fr-FR';
+      if (frenchVoice) u.voice = frenchVoice;
+      u.rate = 0.98;
 
+      const done = () => resolve();
 
-  // 男性 → 間 → 女性
-  await speakOnce(male);
-  await waitMs(250); // 間隔（好みで 150〜400ms くらい）
-  await speakOnce(female);
-}
+      // Safari対策：onendが飛ばない場合があるので保険
+      const fallback = setTimeout(done, 4000);
+      u.onend = () => { clearTimeout(fallback); done(); };
+      u.onerror = () => { clearTimeout(fallback); done(); };
 
+      window.speechSynthesis.speak(u);
+    });
+  }
+
+  async function speakGendered(item) {
+    playToken += 1;
+    const token = playToken;
+
+    cancelSpeech();
+
+    const male = item.masculine.article === "l'"
+      ? `${item.masculine.article}${item.masculine.word}`
+      : `${item.masculine.article} ${item.masculine.word}`;
+
+    const female = item.feminine.article === "l'"
+      ? `${item.feminine.article}${item.feminine.word}`
+      : `${item.feminine.article} ${item.feminine.word}`;
+
+    if (item.feminine.same || male === female) {
+      await speakOnce(male, token);
+      return;
+    }
+
+    await speakOnce(male, token);
+    if (token !== playToken) return;
+
+    await waitMs(250);
+    if (token !== playToken) return;
+
+    await speakOnce(female, token);
+  }
+  // -----------------------------------
 
   function formatWithArticle(item) {
     if (!item.article) return item.word;
@@ -221,11 +209,6 @@ async function speakGendered(item) {
 
     const isProfession = Boolean(item.masculine && item.feminine);
     const titleText = isProfession ? formatGendered(item) : formatWithArticle(item);
-    const speakText = isProfession
-      ? (item.masculine.article === "l'"
-          ? `${item.masculine.article}${item.masculine.word}`
-          : `${item.masculine.article} ${item.masculine.word}`)
-      : formatWithArticle(item);
 
     const visual = item.image
       ? buildImageVisual(item, titleText)
@@ -243,29 +226,25 @@ async function speakGendered(item) {
     `;
 
     card.append(visual, content);
-const play = async () => {
-  const isProfession = Boolean(item.masculine && item.feminine);
 
-  if (isProfession) {
-    await speakGendered(item);
-  } else {
-    // 動物：クリックごとに新トークン＆キャンセルして1回だけ
-    playToken += 1;
-    const token = playToken;
-    cancelSpeech();
-    await speakOnce(formatWithArticle(item), token);
-  }
-};
+    const play = async () => {
+      if (isProfession) {
+        await speakGendered(item);
+      } else {
+        playToken += 1;
+        const token = playToken;
+        cancelSpeech();
+        await speakOnce(formatWithArticle(item), token);
+      }
+    };
 
-
-card.addEventListener('click', play);
-card.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();
-    play();
-  }
-});
-
+    card.addEventListener('click', play);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        play();
+      }
+    });
 
     return card;
   }
@@ -303,12 +282,9 @@ card.addEventListener('keydown', (e) => {
 
   window.addEventListener('load', () => {
     selectFrenchVoice();
-
-    // Safari等で addEventListener が無いケースを避ける
     if (window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = selectFrenchVoice;
     }
-
     setupSelector();
     render();
   });
