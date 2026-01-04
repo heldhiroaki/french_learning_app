@@ -94,6 +94,8 @@
     if (!window.speechSynthesis || typeof window.speechSynthesis.getVoices !== 'function') return;
     const voices = window.speechSynthesis.getVoices() || [];
     frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
+    console.log('Using voice:', frenchVoice ? `${frenchVoice.name} (${frenchVoice.lang})` : 'NONE');
+
   }
 
   // ---- speech (stable sequential) ----
