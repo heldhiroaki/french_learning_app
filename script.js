@@ -20,57 +20,56 @@
     { article: 'le', word: 'loup', reading: 'ルー', hint: 'Wolf', emoji: '🐺' },
   ];
 
- const professions = [
-  {
-    masculine: { article: 'le', word: 'médecin' },
-    feminine:  { article: 'la', word: 'médecin', same: true },
-    reading: 'メドゥサン',
-    hint: 'Doctor',
-    image: './doctor.jpg',
-    sourceNote: 'SOURCE_DOCTOR'
-  },
-  {
-    masculine: { article: 'le', word: 'pompier' },
-    feminine:  { article: 'la', word: 'pompière' },
-    reading: 'ポンピエ',
-    hint: 'Firefighter',
-    image: './firefighter.jpg',
-    sourceNote: 'SOURCE_FIREFIGHTER'
-  },
-  {
-    masculine: { article: 'le', word: 'professeur' },
-    feminine:  { article: 'la', word: 'professeure' },
-    reading: 'プロフェスール',
-    hint: 'Teacher',
-    image: './teacher.jpg',
-    sourceNote: 'SOURCE_TEACHER'
-  },
-   {
-  masculine: { article: "l'", word: 'infirmier' },
-  feminine:  { article: "l'", word: 'infirmière' },
-  reading: 'アンフェルミエ',
-  hint: 'Nurse',
-  image: './nurse.jpg',        // 画像は後でOK
-  sourceNote: 'SOURCE_NURSE'   // 参照元を後で書く場所
-}
-
-  {
-    masculine: { article: 'le', word: 'cuisinier' },
-    feminine:  { article: 'la', word: 'cuisinière' },
-    reading: 'キュイジニエ',
-    hint: 'Cook',
-    image: './cook.jpg',
-    sourceNote: 'SOURCE_COOK'
-  },
-  {
-    masculine: { article: 'le', word: 'policier' },
-    feminine:  { article: 'la', word: 'policière' },
-    reading: 'ポリシエ',
-    hint: 'Police officer',
-    image: './police.jpg',
-    sourceNote: 'SOURCE_POLICE'
-  }
-];
+  const professions = [
+    {
+      masculine: { article: 'le', word: 'médecin' },
+      feminine:  { article: 'la', word: 'médecin', same: true },
+      reading: 'メドゥサン',
+      hint: 'Doctor',
+      image: './doctor.jpg',
+      sourceNote: 'SOURCE_DOCTOR',
+    },
+    {
+      masculine: { article: 'le', word: 'pompier' },
+      feminine:  { article: 'la', word: 'pompière' },
+      reading: 'ポンピエ',
+      hint: 'Firefighter',
+      image: './firefighter.jpg',
+      sourceNote: 'SOURCE_FIREFIGHTER',
+    },
+    {
+      masculine: { article: 'le', word: 'professeur' },
+      feminine:  { article: 'la', word: 'professeure' },
+      reading: 'プロフェスール',
+      hint: 'Teacher',
+      image: './teacher.jpg',
+      sourceNote: 'SOURCE_TEACHER',
+    },
+    {
+      masculine: { article: "l'", word: 'infirmier' },
+      feminine:  { article: "l'", word: 'infirmière' },
+      reading: 'アンフェルミエ',
+      hint: 'Nurse',
+      image: './nurse.jpg',
+      sourceNote: 'SOURCE_NURSE',
+    },
+    {
+      masculine: { article: 'le', word: 'cuisinier' },
+      feminine:  { article: 'la', word: 'cuisinière' },
+      reading: 'キュイジニエ',
+      hint: 'Cook',
+      image: './cook.jpg',
+      sourceNote: 'SOURCE_COOK',
+    },
+    {
+      masculine: { article: 'le', word: 'policier' },
+      feminine:  { article: 'la', word: 'policière' },
+      reading: 'ポリシエ',
+      hint: 'Police officer',
+      image: './police.jpg',
+      sourceNote: 'SOURCE_POLICE',
+    },
+  ];
 
   const categories = {
     animals: { label: 'Animaux (動物)', items: animals },
@@ -107,9 +106,27 @@
     speechSynthesis.speak(u);
   }
 
+  // animals用：冠詞込み表記
   function formatWithArticle(item) {
+    if (!item.article) return item.word;
     if (item.article === "l'") return `${item.article}${item.word}`;
     return `${item.article} ${item.word}`;
+  }
+
+  // professions用：男女表記（同形表記含む）
+  function formatGendered(item) {
+    const m = item.masculine.article === "l'"
+      ? `${item.masculine.article}${item.masculine.word}`
+      : `${item.masculine.article} ${item.masculine.word}`;
+
+    const f = item.feminine.article === "l'"
+      ? `${item.feminine.article}${item.feminine.word}`
+      : `${item.feminine.article} ${item.feminine.word}`;
+
+    if (item.feminine.same) {
+      return `${m} / ${f}（同形）`;
+    }
+    return `${m} / ${f}`;
   }
 
   function buildEmojiVisual(item, index) {
@@ -129,10 +146,10 @@
     return v;
   }
 
-  function buildImageVisual(item) {
+  function buildImageVisual(item, altText) {
     const img = document.createElement('img');
     img.src = item.image;
-    img.alt = formatWithArticle(item);
+    img.alt = altText;
     img.className = 'photo-visual';
     img.loading = 'lazy';
     return img;
@@ -143,15 +160,23 @@
     card.className = 'card';
     card.tabIndex = 0;
 
+    const isProfession = Boolean(item.masculine && item.feminine);
+    const titleText = isProfession ? formatGendered(item) : formatWithArticle(item);
+    const speakText = isProfession
+      ? (item.masculine.article === "l'"
+          ? `${item.masculine.article}${item.masculine.word}`
+          : `${item.masculine.article} ${item.masculine.word}`)
+      : formatWithArticle(item);
+
     const visual = item.image
-      ? buildImageVisual(item)
+      ? buildImageVisual(item, titleText)
       : buildEmojiVisual(item, index);
 
     const content = document.createElement('div');
     content.className = 'card-content';
     content.innerHTML = `
       <div class="word">
-        ${formatWithArticle(item)}
+        ${titleText}
         <span class="pill">${item.hint}</span>
       </div>
       <div class="pronunciation">${item.reading}</div>
@@ -159,12 +184,19 @@
     `;
 
     card.append(visual, content);
-    card.addEventListener('click', () => speakWord(formatWithArticle(item)));
+    card.addEventListener('click', () => speakWord(speakText));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        speakWord(speakText);
+      }
+    });
     return card;
   }
 
   function render() {
     const container = document.getElementById('app-container');
+    if (!container) return;
     container.innerHTML = '';
     categories[currentCategory].items.forEach((item, i) => {
       container.appendChild(createCard(item, i));
@@ -174,11 +206,14 @@
   function setupSelector() {
     const select = document.getElementById('category-select');
     const title = document.getElementById('category-title');
+    if (!select || !title) return;
 
+    select.innerHTML = '';
     Object.entries(categories).forEach(([key, cat]) => {
       const o = document.createElement('option');
       o.value = key;
       o.textContent = cat.label;
+      if (key === currentCategory) o.selected = true;
       select.appendChild(o);
     });
 
@@ -191,8 +226,8 @@
 
   window.addEventListener('load', () => {
     selectFrenchVoice();
-    if (speechSynthesis) {
-      speechSynthesis.addEventListener('voiceschanged', selectFrenchVoice);
+    if (window.speechSynthesis) {
+      window.speechSynthesis.addEventListener('voiceschanged', selectFrenchVoice);
     }
     setupSelector();
     render();
