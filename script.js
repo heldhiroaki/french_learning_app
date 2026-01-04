@@ -96,16 +96,51 @@
     frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
   }
 
-  function speakWord(text) {
-    if (!window.speechSynthesis) return;
+function speakOnce(text) {
+  return new Promise((resolve) => {
+    if (!window.speechSynthesis) return resolve();
+
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'fr-FR';
     if (frenchVoice) u.voice = frenchVoice;
     u.rate = 0.98;
 
+    u.onend = () => resolve();
+    u.onerror = () => resolve();
+
+    // いま再生中のものは止めてから再生
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
+  });
+}
+
+function waitMs(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+  async function speakGendered(item) {
+  // 男性形テキスト
+  const male = item.masculine.article === "l'"
+    ? `${item.masculine.article}${item.masculine.word}`
+    : `${item.masculine.article} ${item.masculine.word}`;
+
+  // 女性形テキスト
+  const female = item.feminine.article === "l'"
+    ? `${item.feminine.article}${item.feminine.word}`
+    : `${item.feminine.article} ${item.feminine.word}`;
+
+  // 同形なら1回だけ
+  if (item.feminine.same || male === female) {
+    await speakOnce(male);
+    return;
   }
+
+  // 男性 → 間 → 女性
+  await speakOnce(male);
+  await waitMs(250); // 間隔（好みで 150〜400ms くらい）
+  await speakOnce(female);
+}
+
 
   function formatWithArticle(item) {
     if (!item.article) return item.word;
@@ -180,13 +215,24 @@
     `;
 
     card.append(visual, content);
-    card.addEventListener('click', () => speakWord(speakText));
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        speakWord(speakText);
-      }
-    });
+const play = () => {
+  const isProfession = Boolean(item.masculine && item.feminine);
+  if (isProfession) {
+    speakGendered(item);
+  } else {
+    // 動物はこれまで通り1回
+    speakOnce(formatWithArticle(item));
+  }
+};
+
+card.addEventListener('click', play);
+card.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    play();
+  }
+});
+
 
     return card;
   }
