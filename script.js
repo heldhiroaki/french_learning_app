@@ -91,7 +91,7 @@
   let currentCategory = 'animals';
 
   function selectFrenchVoice() {
-    if (!window.speechSynthesis) return;
+    if (!window.speechSynthesis || typeof window.speechSynthesis.getVoices !== 'function') return;
     const voices = window.speechSynthesis.getVoices() || [];
     frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
   }
@@ -102,18 +102,17 @@
     u.lang = 'fr-FR';
     if (frenchVoice) u.voice = frenchVoice;
     u.rate = 0.98;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
   }
 
-  // animals用：冠詞込み表記
   function formatWithArticle(item) {
     if (!item.article) return item.word;
     if (item.article === "l'") return `${item.article}${item.word}`;
     return `${item.article} ${item.word}`;
   }
 
-  // professions用：男女表記（同形表記含む）
   function formatGendered(item) {
     const m = item.masculine.article === "l'"
       ? `${item.masculine.article}${item.masculine.word}`
@@ -123,10 +122,7 @@
       ? `${item.feminine.article}${item.feminine.word}`
       : `${item.feminine.article} ${item.feminine.word}`;
 
-    if (item.feminine.same) {
-      return `${m} / ${f}（同形）`;
-    }
-    return `${m} / ${f}`;
+    return item.feminine.same ? `${m} / ${f}（同形）` : `${m} / ${f}`;
   }
 
   function buildEmojiVisual(item, index) {
@@ -191,12 +187,14 @@
         speakWord(speakText);
       }
     });
+
     return card;
   }
 
   function render() {
     const container = document.getElementById('app-container');
     if (!container) return;
+
     container.innerHTML = '';
     categories[currentCategory].items.forEach((item, i) => {
       container.appendChild(createCard(item, i));
@@ -226,9 +224,12 @@
 
   window.addEventListener('load', () => {
     selectFrenchVoice();
+
+    // Safari等で addEventListener が無いケースを避ける
     if (window.speechSynthesis) {
-      window.speechSynthesis.addEventListener('voiceschanged', selectFrenchVoice);
+      window.speechSynthesis.onvoiceschanged = selectFrenchVoice;
     }
+
     setupSelector();
     render();
   });
