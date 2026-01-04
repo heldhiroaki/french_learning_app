@@ -20,22 +20,57 @@
     { article: 'le', word: 'loup', reading: 'ルー', hint: 'Wolf', emoji: '🐺' },
   ];
 
-  const professions = [
-    {
-      article: 'le',
-      word: 'médecin',
-      reading: 'メドゥサン',
-      hint: 'Doctor',
-      image: './doctor.png',
-    },
-    {
-      article: 'le',
-      word: 'pompier',
-      reading: 'ポンピエ',
-      hint: 'Firefighter',
-      image: './firefighter.png',
-    },
-  ];
+ const professions = [
+  {
+    masculine: { article: 'le', word: 'médecin' },
+    feminine:  { article: 'la', word: 'médecin', same: true },
+    reading: 'メドゥサン',
+    hint: 'Doctor',
+    image: './doctor.jpg',
+    sourceNote: 'SOURCE_DOCTOR'
+  },
+  {
+    masculine: { article: 'le', word: 'pompier' },
+    feminine:  { article: 'la', word: 'pompière' },
+    reading: 'ポンピエ',
+    hint: 'Firefighter',
+    image: './firefighter.jpg',
+    sourceNote: 'SOURCE_FIREFIGHTER'
+  },
+  {
+    masculine: { article: 'le', word: 'professeur' },
+    feminine:  { article: 'la', word: 'professeure' },
+    reading: 'プロフェスール',
+    hint: 'Teacher',
+    image: './teacher.jpg',
+    sourceNote: 'SOURCE_TEACHER'
+  },
+   {
+  masculine: { article: "l'", word: 'infirmier' },
+  feminine:  { article: "l'", word: 'infirmière' },
+  reading: 'アンフェルミエ',
+  hint: 'Nurse',
+  image: './nurse.jpg',        // 画像は後でOK
+  sourceNote: 'SOURCE_NURSE'   // 参照元を後で書く場所
+}
+
+  {
+    masculine: { article: 'le', word: 'cuisinier' },
+    feminine:  { article: 'la', word: 'cuisinière' },
+    reading: 'キュイジニエ',
+    hint: 'Cook',
+    image: './cook.jpg',
+    sourceNote: 'SOURCE_COOK'
+  },
+  {
+    masculine: { article: 'le', word: 'policier' },
+    feminine:  { article: 'la', word: 'policière' },
+    reading: 'ポリシエ',
+    hint: 'Police officer',
+    image: './police.jpg',
+    sourceNote: 'SOURCE_POLICE'
+  }
+];
 
   const categories = {
     animals: { label: 'Animaux (動物)', items: animals },
