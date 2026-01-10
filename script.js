@@ -1,6 +1,10 @@
 (() => {
   'use strict';
 
+  // =========================
+  // 1) DATA
+  // =========================
+
   const animals = [
     { article: 'le', word: 'chat', reading: 'シャ', hint: 'Cat', emoji: '🐱' },
     { article: 'le', word: 'chien', reading: 'シアン', hint: 'Dog', emoji: '🐶' },
@@ -23,7 +27,7 @@
   const professions = [
     {
       masculine: { article: 'le', word: 'médecin' },
-      feminine:  { article: 'la', word: 'médecin', same: true },
+      feminine: { article: 'la', word: 'médecin', same: true },
       reading: 'メドゥサン',
       hint: 'Doctor',
       image: './doctor.jpg',
@@ -31,7 +35,7 @@
     },
     {
       masculine: { article: 'le', word: 'pompier' },
-      feminine:  { article: 'la', word: 'pompière' },
+      feminine: { article: 'la', word: 'pompière' },
       reading: 'ポンピエ',
       hint: 'Firefighter',
       image: './firefighter.jpg',
@@ -39,7 +43,7 @@
     },
     {
       masculine: { article: 'le', word: 'professeur' },
-      feminine:  { article: 'la', word: 'professeure' },
+      feminine: { article: 'la', word: 'professeure' },
       reading: 'プロフェスール',
       hint: 'Teacher',
       image: './teacher.jpg',
@@ -47,7 +51,7 @@
     },
     {
       masculine: { article: "l'", word: 'infirmier' },
-      feminine:  { article: "l'", word: 'infirmière' },
+      feminine: { article: "l'", word: 'infirmière' },
       reading: 'アンフェルミエ',
       hint: 'Nurse',
       image: './nurse.jpg',
@@ -55,7 +59,7 @@
     },
     {
       masculine: { article: 'le', word: 'cuisinier' },
-      feminine:  { article: 'la', word: 'cuisinière' },
+      feminine: { article: 'la', word: 'cuisinière' },
       reading: 'キュイジニエ',
       hint: 'Cook',
       image: './cook.jpg',
@@ -63,7 +67,7 @@
     },
     {
       masculine: { article: 'le', word: 'policier' },
-      feminine:  { article: 'la', word: 'policière' },
+      feminine: { article: 'la', word: 'policière' },
       reading: 'ポリシエ',
       hint: 'Police officer',
       image: './police.jpg',
@@ -71,9 +75,32 @@
     },
   ];
 
+  // ★ NEW: Nature (自然) — emojiではなく画像を参照する
+  // 画像ファイル名は [タイトル].png を想定（例: Mountain.png）
+  // 画像はリポジトリ直下に置く想定: ./Mountain.png など
+  const nature = [
+    { article: 'la', word: 'montagne', reading: 'モンターニュ', hint: 'Mountain', image: './Mountain.png', sourceNote: 'SOURCE_MOUNTAIN' },
+    { article: 'la', word: 'rivière', reading: 'リヴィエール', hint: 'River', image: './River.png', sourceNote: 'SOURCE_RIVER' },
+    { article: 'la', word: 'mer', reading: 'メール', hint: 'Sea', image: './Sea.png', sourceNote: 'SOURCE_SEA' },
+    { article: 'le', word: 'lac', reading: 'ラック', hint: 'Lake', image: './Lake.png', sourceNote: 'SOURCE_LAKE' },
+    { article: 'la', word: 'vallée', reading: 'ヴァレ', hint: 'Valley', image: './Valley.png', sourceNote: 'SOURCE_VALLEY' },
+    { article: 'la', word: 'cascade', reading: 'カスカード', hint: 'Waterfall', image: './Waterfall.png', sourceNote: 'SOURCE_WATERFALL' },
+    { article: 'la', word: 'falaise', reading: 'ファレーズ', hint: 'Cliff', image: './Cliff.png', sourceNote: 'SOURCE_CLIFF' },
+    { article: 'le', word: 'volcan', reading: 'ヴォルカン', hint: 'Volcano', image: './Volcano.png', sourceNote: 'SOURCE_VOLCANO' },
+    { article: 'le', word: 'canyon', reading: 'カニョン', hint: 'Canyon', image: './Canyon.png', sourceNote: 'SOURCE_CANYON' },
+    { article: 'le', word: 'glacier', reading: 'グラシエ', hint: 'Glacier', image: './Glacier.png', sourceNote: 'SOURCE_GLACIER' },
+    { article: 'la', word: 'colline', reading: 'コリーヌ', hint: 'Hill', image: './Hill.png', sourceNote: 'SOURCE_HILL' },
+    { article: 'le', word: 'désert', reading: 'デゼール', hint: 'Desert', image: './Desert.png', sourceNote: 'SOURCE_DESERT' },
+    { article: 'la', word: 'grotte', reading: 'グロット', hint: 'Cave', image: './Cave.png', sourceNote: 'SOURCE_CAVE' },
+    { article: "l'", word: 'île', reading: 'イル', hint: 'Island', image: './Island.png', sourceNote: 'SOURCE_ISLAND' },
+    { article: 'le', word: 'plateau', reading: 'プラトー', hint: 'Plateau', image: './Plateau.png', sourceNote: 'SOURCE_PLATEAU' },
+    { article: 'la', word: 'dune', reading: 'デュン', hint: 'Dune', image: './Dune.png', sourceNote: 'SOURCE_DUNE' },
+  ];
+
   const categories = {
     animals: { label: 'Animaux (動物)', items: animals },
     professions: { label: 'Métiers (職業)', items: professions },
+    nature: { label: 'Nature (自然)', items: nature }, // ★追加
   };
 
   const palette = [
@@ -87,23 +114,21 @@
     ['#ede9fe', '#c4b5fd'],
   ];
 
+  // =========================
+  // 2) SPEECH
+  // =========================
+
   let frenchVoice = null;
   let currentCategory = 'animals';
-
-function selectFrenchVoice() {
-  if (!window.speechSynthesis || typeof window.speechSynthesis.getVoices !== 'function') return;
-  const voices = window.speechSynthesis.getVoices() || [];
-  frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
-
-  console.log(
-    'Using voice:',
-    frenchVoice ? `${frenchVoice.name} (${frenchVoice.lang})` : 'NONE'
-  );
-}
-
-
-  // ---- speech (stable sequential) ----
   let playToken = 0;
+
+  function selectFrenchVoice() {
+    if (!window.speechSynthesis || typeof window.speechSynthesis.getVoices !== 'function') return;
+    const voices = window.speechSynthesis.getVoices() || [];
+    frenchVoice = voices.find(v => v.lang && v.lang.startsWith('fr')) || null;
+    // デバッグしたい場合はこの1行を有効化
+    // console.log('Using voice:', frenchVoice ? `${frenchVoice.name} (${frenchVoice.lang})` : 'NONE');
+  }
 
   function cancelSpeech() {
     if (!window.speechSynthesis) return;
@@ -126,8 +151,8 @@ function selectFrenchVoice() {
 
       const done = () => resolve();
 
-      // Safari対策：onendが飛ばない場合があるので保険
-      const fallback = setTimeout(done, 4000);
+      // Safari等で onend が不安定なことがあるので保険
+      const fallback = setTimeout(done, 4500);
       u.onend = () => { clearTimeout(fallback); done(); };
       u.onerror = () => { clearTimeout(fallback); done(); };
 
@@ -138,7 +163,6 @@ function selectFrenchVoice() {
   async function speakGendered(item) {
     playToken += 1;
     const token = playToken;
-
     cancelSpeech();
 
     const male = item.masculine.article === "l'"
@@ -162,7 +186,10 @@ function selectFrenchVoice() {
 
     await speakOnce(female, token);
   }
-  // -----------------------------------
+
+  // =========================
+  // 3) FORMATTERS
+  // =========================
 
   function formatWithArticle(item) {
     if (!item.article) return item.word;
@@ -179,8 +206,12 @@ function selectFrenchVoice() {
       ? `${item.feminine.article}${item.feminine.word}`
       : `${item.feminine.article} ${item.feminine.word}`;
 
-    return item.feminine.same ? `${m} / ${f}（同形）` : `${m} / ${f}`;
+    return (item.feminine.same || m === f) ? `${m} / ${f}（同形）` : `${m} / ${f}`;
   }
+
+  // =========================
+  // 4) UI BUILDERS
+  // =========================
 
   function buildEmojiVisual(item, index) {
     const [start, end] = palette[index % palette.length];
@@ -205,6 +236,15 @@ function selectFrenchVoice() {
     img.alt = altText;
     img.className = 'photo-visual';
     img.loading = 'lazy';
+    img.decoding = 'async';
+
+    // 画像が無い/パス違いのときに分かりやすくする
+    img.addEventListener('error', () => {
+      img.alt = `Missing image: ${altText}`;
+      img.style.objectFit = 'contain';
+      img.style.background = '#fff';
+    });
+
     return img;
   }
 
@@ -212,6 +252,7 @@ function selectFrenchVoice() {
     const card = document.createElement('article');
     card.className = 'card';
     card.tabIndex = 0;
+    card.setAttribute('role', 'button');
 
     const isProfession = Boolean(item.masculine && item.feminine);
     const titleText = isProfession ? formatGendered(item) : formatWithArticle(item);
@@ -234,7 +275,9 @@ function selectFrenchVoice() {
     card.append(visual, content);
 
     const play = async () => {
-      if (isProfession) {
+      const isProfessionInner = Boolean(item.masculine && item.feminine);
+
+      if (isProfessionInner) {
         await speakGendered(item);
       } else {
         playToken += 1;
@@ -279,18 +322,27 @@ function selectFrenchVoice() {
       select.appendChild(o);
     });
 
-    select.addEventListener('change', e => {
-      currentCategory = e.target.value;
+    select.addEventListener('change', (e) => {
+      const next = e.target.value;
+      if (!categories[next]) return;
+      currentCategory = next;
       title.textContent = categories[currentCategory].label;
       render();
     });
   }
 
+  // =========================
+  // 5) BOOT
+  // =========================
+
   window.addEventListener('load', () => {
     selectFrenchVoice();
+
+    // voices が遅延で来るブラウザ対応
     if (window.speechSynthesis) {
       window.speechSynthesis.onvoiceschanged = selectFrenchVoice;
     }
+
     setupSelector();
     render();
   });
