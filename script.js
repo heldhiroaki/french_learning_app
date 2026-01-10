@@ -78,24 +78,24 @@
   // ★ NEW: Nature (自然) — emojiではなく画像を参照する
   // 画像ファイル名は [タイトル].png を想定（例: Mountain.png）
   // 画像はリポジトリ直下に置く想定: ./Mountain.png など
-  const nature = [
-    { article: 'la', word: 'montagne', reading: 'モンターニュ', hint: 'Mountain', image: './Mountain.jpg', sourceNote: 'SOURCE_MOUNTAIN' },
-    { article: 'la', word: 'rivière', reading: 'リヴィエール', hint: 'River', image: './River.jpg', sourceNote: 'SOURCE_RIVER' },
-    { article: 'la', word: 'mer', reading: 'メール', hint: 'Sea', image: './Sea.jpg', sourceNote: 'SOURCE_SEA' },
-    { article: 'le', word: 'lac', reading: 'ラック', hint: 'Lake', image: './Lake.jpg', sourceNote: 'SOURCE_LAKE' },
-    { article: 'la', word: 'vallée', reading: 'ヴァレ', hint: 'Valley', image: './Valley.jpg', sourceNote: 'SOURCE_VALLEY' },
-    { article: 'la', word: 'cascade', reading: 'カスカード', hint: 'Waterfall', image: './Waterfall.jpg', sourceNote: 'SOURCE_WATERFALL' },
-    { article: 'la', word: 'falaise', reading: 'ファレーズ', hint: 'Cliff', image: './Cliff.jpg', sourceNote: 'SOURCE_CLIFF' },
-    { article: 'le', word: 'volcan', reading: 'ヴォルカン', hint: 'Volcano', image: './Volcano.jpg', sourceNote: 'SOURCE_VOLCANO' },
-    { article: 'le', word: 'canyon', reading: 'カニョン', hint: 'Canyon', image: './Canyon.jpg', sourceNote: 'SOURCE_CANYON' },
-    { article: 'le', word: 'glacier', reading: 'グラシエ', hint: 'Glacier', image: './Glacier.jpg', sourceNote: 'SOURCE_GLACIER' },
-    { article: 'la', word: 'colline', reading: 'コリーヌ', hint: 'Hill', image: './Hill.jpg', sourceNote: 'SOURCE_HILL' },
-    { article: 'le', word: 'désert', reading: 'デゼール', hint: 'Desert', image: './Desert.jpg', sourceNote: 'SOURCE_DESERT' },
-    { article: 'la', word: 'grotte', reading: 'グロット', hint: 'Cave', image: './Cave.jpg', sourceNote: 'SOURCE_CAVE' },
-    { article: "l'", word: 'île', reading: 'イル', hint: 'Island', image: './Island.jpg', sourceNote: 'SOURCE_ISLAND' },
-    { article: 'le', word: 'plateau', reading: 'プラトー', hint: 'Plateau', image: './Plateau.jpg', sourceNote: 'SOURCE_PLATEAU' },
-    { article: 'la', word: 'dune', reading: 'デュン', hint: 'Dune', image: './Dune.jpg', sourceNote: 'SOURCE_DUNE' },
-  ];
+ const nature = [
+  { article: 'la', word: 'montagne', reading: 'モンターニュ', hint: 'Mountain', image: './Mountain.jpg', sourceNote: 'SOURCE_MOUNTAIN' },
+  { article: 'la', word: 'rivière', reading: 'リヴィエール', hint: 'River', image: './River.jpg', sourceNote: 'SOURCE_RIVER' },
+  { article: 'la', word: 'mer', reading: 'メール', hint: 'Sea', image: './Sea.jpg', sourceNote: 'SOURCE_SEA' },
+  { article: 'le', word: 'lac', reading: 'ラック', hint: 'Lake', image: './Lake.jpg', sourceNote: 'SOURCE_LAKE' },
+  { article: 'la', word: 'vallée', reading: 'ヴァレ', hint: 'Valley', image: './Valley.jpg', sourceNote: 'SOURCE_VALLEY' },
+  { article: 'la', word: 'cascade', reading: 'カスカード', hint: 'Waterfall', image: './Waterfall.jpg', sourceNote: 'SOURCE_WATERFALL' },
+  { article: 'la', word: 'falaise', reading: 'ファレーズ', hint: 'Cliff', image: './Cliff.jpg', sourceNote: 'SOURCE_CLIFF' },
+  { article: 'le', word: 'volcan', reading: 'ヴォルカン', hint: 'Volcano', image: './Volcano.jpg', sourceNote: 'SOURCE_VOLCANO' },
+  { article: 'le', word: 'canyon', reading: 'カニョン', hint: 'Canyon', image: './Canyon.jpg', sourceNote: 'SOURCE_CANYON' },
+  { article: 'le', word: 'glacier', reading: 'グラシエ', hint: 'Glacier', image: './Glacier.jpg', sourceNote: 'SOURCE_GLACIER' },
+  { article: 'la', word: 'colline', reading: 'コリーヌ', hint: 'Hill', image: './Hill.jpg', sourceNote: 'SOURCE_HILL' },
+  { article: 'le', word: 'désert', reading: 'デゼール', hint: 'Desert', image: './Desert.jpg', sourceNote: 'SOURCE_DESERT' },
+  { article: 'la', word: 'grotte', reading: 'グロット', hint: 'Cave', image: './Cave.jpg', sourceNote: 'SOURCE_CAVE' },
+  { article: "l'", word: 'île', reading: 'イル', hint: 'Island', image: './Island.jpg', sourceNote: 'SOURCE_ISLAND' },
+  { article: 'le', word: 'plateau', reading: 'プラトー', hint: 'Plateau', image: './Plateau.jpg', sourceNote: 'SOURCE_PLATEAU' },
+  { article: 'la', word: 'dune', reading: 'デュン', hint: 'Dune', image: './Dune.jpg', sourceNote: 'SOURCE_DUNE' },
+];
 
   const categories = {
     animals: { label: 'Animaux (動物)', items: animals },
